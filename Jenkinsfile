@@ -1,22 +1,26 @@
 pipeline {
   agent any
 
+  environment {
+    IMAGE = "mynginx"
+  }
+
   stages {
-    stage('Build Image') {
+    stage('Checkout') {
       steps {
-        sh 'docker build -t tejsharma22/nginx:latest .'
+        git 'https://github.com/tejsharma11/nginx-install.git'
       }
     }
 
-    stage('Push Image') {
+    stage('Build Docker Image') {
       steps {
-        sh 'docker push tejsharma22/nginx:latest'
+        bat "docker build -t $IMAGE:latest ."
       }
     }
 
     stage('Deploy to Kubernetes') {
       steps {
-        sh '''
+        bat '''
           kubectl apply -f k8s/deployment.yaml
           kubectl apply -f k8s/service.yaml
         '''
