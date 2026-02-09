@@ -3,36 +3,23 @@ pipeline {
 
     stages {
 
-        stage('Install Nginx (Windows)') {
+        stage('Checkout Code') {
             steps {
-                powershell '''
-                $version = "1.27.4"
-                $url = "https://nginx.org/download/nginx-$version.zip"
-                $zip = "C:\\nginx.zip"
-
-                if (!(Test-Path "C:\\nginx")) {
-                    Invoke-WebRequest -Uri $url -OutFile $zip
-                    Expand-Archive $zip -DestinationPath C:\\
-                    Rename-Item "C:\\nginx-$version" nginx
-                }
-                '''
+                checkout scm
             }
         }
 
-        stage('Deploy Config & HTML') {
+        stage('Build Docker Image') {
             steps {
-                powershell '''
-                Stop-Process -Name nginx -ErrorAction SilentlyContinue
-                Copy-Item ".\\nginx.conf" "C:\\nginx\\conf\\nginx.conf" -Force
-                Copy-Item ".\\html\\*" "C:\\nginx\\html" -Recurse -Force
-                '''
+                bat 'docker build -t nginx-jenkins .'
             }
         }
 
-        stage('Start Nginx') {
+        stage('Run Docker Container') {
             steps {
-                powershell '''
-                Start-Process "C:\\nginx\\nginx.exe"
+                bat '''
+                docker rm -f nginx-container || exit 0
+                docker run -d -p 8080:80 --name nginx-container nginx-jenkins
                 '''
             }
         }
