@@ -1,12 +1,12 @@
 stage('Build Image') {
   steps {
-    sh 'docker build -t dockerhubuser/nginx:latest .'
+    sh 'docker build -t tejsharma22/nginx:latest .'
   }
 }
 
 stage('Push Image') {
   steps {
-    sh 'docker push dockerhubuser/nginx:latest'
+    sh 'docker push tejsharma22/nginx:latest'
   }
 }
 
