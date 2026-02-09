@@ -6,12 +6,6 @@ pipeline {
   }
 
   stages {
-    stage('Checkout') {
-      steps {
-        git 'https://github.com/tejsharma11/nginx-install.git'
-      }
-    }
-
     stage('Build Docker Image') {
       steps {
         bat "docker build -t $IMAGE:latest ."
