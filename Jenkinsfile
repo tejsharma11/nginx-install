@@ -1,18 +1,40 @@
 pipeline {
-  agent any
+    agent any
 
-    stage('Build Docker Image') {
-      steps {
-        bat 'docker build -t mynginx:latest .'
-      }
-    }
+    stages {
 
-    stage('Run Container') {
-      steps {
-        bat 'docker stop mynginx || exit 0'
-        bat 'docker rm mynginx || exit 0'
-        bat 'docker run -d --name mynginx -p 8080:80 mynginx:latest'
-      }
+        stage('Install Nginx (Windows)') {
+            steps {
+                powershell '''
+                $version = "1.27.4"
+                $url = "https://nginx.org/download/nginx-$version.zip"
+                $zip = "C:\\nginx.zip"
+
+                if (!(Test-Path "C:\\nginx")) {
+                    Invoke-WebRequest -Uri $url -OutFile $zip
+                    Expand-Archive $zip -DestinationPath C:\\
+                    Rename-Item "C:\\nginx-$version" nginx
+                }
+                '''
+            }
+        }
+
+        stage('Deploy Config & HTML') {
+            steps {
+                powershell '''
+                Stop-Process -Name nginx -ErrorAction SilentlyContinue
+                Copy-Item ".\\nginx.conf" "C:\\nginx\\conf\\nginx.conf" -Force
+                Copy-Item ".\\html\\*" "C:\\nginx\\html" -Recurse -Force
+                '''
+            }
+        }
+
+        stage('Start Nginx') {
+            steps {
+                powershell '''
+                Start-Process "C:\\nginx\\nginx.exe"
+                '''
+            }
+        }
     }
-  }
 }
