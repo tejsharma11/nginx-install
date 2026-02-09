@@ -19,7 +19,7 @@ pipeline {
             steps {
                 bat '''
                 docker rm -f nginx-container || exit 0
-                docker run -d -p 8080:80 --name nginx-container nginx-jenkins
+                docker run -d -p 9090:80 --name nginx-container nginx-jenkins
                 '''
             }
         }
