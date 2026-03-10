@@ -1,4 +1,4 @@
-name: Docker Image CI New
+name: Docker Image CI New training
 
 on:
   push:
