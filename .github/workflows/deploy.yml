@@ -1,4 +1,4 @@
-name: Build & Deploy to Local Kubernetes new, mujhe bahut maja aaya
+name: Build & Deploy to Local Kubernetes new, mu
 
 on:
   push:
