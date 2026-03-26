@@ -16,4 +16,10 @@ jobs:
        - name: test my print
          run: echo "my test first on github"
 
+  deploy-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: test my print
+        run: echo "my test first on github"        
+
         
