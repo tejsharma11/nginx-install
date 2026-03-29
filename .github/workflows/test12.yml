@@ -1,6 +1,3 @@
-##Build#Test#Deploy
-
-
 name: Echo Print
 on: push 
 jobs:
