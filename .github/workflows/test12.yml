@@ -1,9 +1,9 @@
 ##Build#Test#Deploy
 
 on : push
-run-on : ubuntu
 jobs:
   build-job:
+     run-on : ubuntu-latest
      steps:
-       - name: "continue-on-error"
-       run :  ubuntu
+       - name: Print the messaage 
+         run : "my first build" 
