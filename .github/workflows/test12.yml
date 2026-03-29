@@ -1,9 +1,12 @@
 ##Build#Test#Deploy
 
-on : push
+
+name: Echo Print
+on: push 
 jobs:
   build-job:
-     run-on : ubuntu-latest
-     steps:
-       - name: Print the messaage 
-         run : "my first build" 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print messaage 
+        run: echo "my first build" 
+
