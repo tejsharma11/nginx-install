@@ -1,0 +1,9 @@
+##Build#Test#Deploy
+
+on : push
+run-on : ubuntu
+jobs:
+  build-job:
+     steps:
+       - name: "continue-on-error"
+       run :  ubuntu
